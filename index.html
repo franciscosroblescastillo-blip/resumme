@@ -316,29 +316,18 @@
   }
 
   if (btn) {
-    btn.addEventListener('click', async function(){
-      status.textContent = 'Preparing download...';
-      try{
-        var downloads = await window.claude.use('downloads');
-        if(!downloads){
-          status.textContent = 'Downloads are not available in this view. Email me and I will send it over.';
-          return;
-        }
-        var blob = b64ToBlob(CV_B64, 'application/pdf');
-        try{
-          await downloads.save({filename: 'Francisco_Robles_CastilloCV.pdf', data: blob});
-          status.textContent = 'CV downloaded. Check your downloads folder.';
-        }catch(err){
-          if(err && err.code === 'declined'){
-            status.textContent = '';
-          } else {
-            status.textContent = 'Could not download it. Email me and I will send it over.';
-          }
-        }
-      }catch(e){
-        status.textContent = 'Downloads are not available in this view. Email me and I will send it over.';
-      }
-    });
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    const link = document.createElement('a');
+    link.href = 'Francisco_Robles_CastilloCV_final.pdf';
+    link.download = 'Francisco_Robles_CastilloCV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    status.textContent = 'CV descargado. Revisa tu carpeta de descargas.';
+  });
+}
+
   }
 
   // Scroll reveal for photos
